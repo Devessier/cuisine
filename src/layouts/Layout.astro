@@ -4,57 +4,187 @@ export interface Props {
 }
 
 const { title } = Astro.props;
+
+const links = [
+	{ text: 'Recettes', link: '/' },
+	{ text: 'Conseils', link: '/conseils' },
+]
+
+const linksWithActiveIndicator = links.map(({ link, ...props }) => ({
+	...props,
+	link,
+	isActive: link === Astro.url.pathname
+}))
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr" class="h-full">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
+		<title>{`La cuisine de Baptiste Devessier - ${title}`}</title>
+		<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+
+		<!-- Disable indexation for now -->
+		<meta name="robots" content="noindex, nofollow">
 	</head>
-	<body>
-		<slot />
+	<body class="h-full">
+		<div class="min-h-full">
+			<nav class="border-b border-gray-200 bg-white">
+				<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+					<div class="flex h-16 justify-between">
+						<div class="flex">
+							<div class="flex flex-shrink-0 items-center">
+								<a href="/" class="text-2xl font-bold before:absolute before:-inset-1 before:-skew-x-6 before:opacity-0 before:bg-red-200 before:block inline-block relative hover:before:opacity-100 before:transition-opacity">
+									<span class="relative text-black">
+										Cuisine
+									</span>
+								</a>
+							</div>
+
+							<div
+								class="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8"
+							>
+								{linksWithActiveIndicator.map(({ text, link, isActive }) => {
+									if (isActive === true) {
+										return (
+											<a
+												href={link}
+												class="border-red-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+												aria-current="page"
+											>
+												{text}
+											</a>
+										)
+									}
+
+									return (
+										<a
+											href={link}
+											class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+										>
+											{text}
+										</a>
+									)
+								})}
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Mobile menu, show/hide based on menu state. -->
+				<div class="sm:hidden" id="mobile-menu">
+					<div class="space-y-1 pt-2 pb-3">
+						<!-- Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800" -->
+						<a
+							href="#"
+							class="bg-indigo-50 border-indigo-500 text-indigo-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+							aria-current="page">Dashboard</a
+						>
+
+						<a
+							href="#"
+							class="border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+							>Team</a
+						>
+
+						<a
+							href="#"
+							class="border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+							>Projects</a
+						>
+
+						<a
+							href="#"
+							class="border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+							>Calendar</a
+						>
+					</div>
+					<div class="border-t border-gray-200 pt-4 pb-3">
+						<div class="flex items-center px-4">
+							<div class="flex-shrink-0">
+								<img
+									class="h-10 w-10 rounded-full"
+									src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+									alt=""
+								/>
+							</div>
+							<div class="ml-3">
+								<div
+									class="text-base font-medium text-gray-800"
+								>
+									Tom Cook
+								</div>
+								<div class="text-sm font-medium text-gray-500">
+									tom@example.com
+								</div>
+							</div>
+							<button
+								type="button"
+								class="ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+							>
+								<span class="sr-only">View notifications</span>
+								<!-- Heroicon name: outline/bell -->
+								<svg
+									class="h-6 w-6"
+									xmlns="http://www.w3.org/2000/svg"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke-width="1.5"
+									stroke="currentColor"
+									aria-hidden="true"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
+									></path>
+								</svg>
+							</button>
+						</div>
+						<div class="mt-3 space-y-1">
+							<a
+								href="#"
+								class="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
+								>Your Profile</a
+							>
+
+							<a
+								href="#"
+								class="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
+								>Settings</a
+							>
+
+							<a
+								href="#"
+								class="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
+								>Sign out</a
+							>
+						</div>
+					</div>
+				</div>
+			</nav>
+
+			<div class="py-10">
+				<header>
+					<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+						<h1
+							class="text-3xl font-bold leading-tight tracking-tight text-gray-900"
+						>
+							{title}
+						</h1>
+					</div>
+				</header>
+				<main>
+					<div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+						<div class="px-4 py-8 sm:px-0">
+							<slot />
+						</div>
+					</div>
+				</main>
+			</div>
+		</div>
 	</body>
 </html>
-<style>
-	:root {
-		--font-size-base: clamp(1rem, 0.34vw + 0.91rem, 1.19rem);
-		--font-size-lg: clamp(1.2rem, 0.7vw + 1.2rem, 1.5rem);
-		--font-size-xl: clamp(2.44rem, 2.38vw + 1.85rem, 3.75rem);
-
-		--color-text: hsl(12, 5%, 4%);
-		--color-bg: hsl(10, 21%, 95%);
-		--color-border: hsl(17, 24%, 90%);
-	}
-
-	html {
-		font-family: system-ui, sans-serif;
-		font-size: var(--font-size-base);
-		color: var(--color-text);
-		background-color: var(--color-bg);
-	}
-
-	body {
-		margin: 0;
-	}
-
-
-</style>
-
-<style is:global>
-	h1 {
-		font-size: var(--font-size-xl);
-	}
-
-	h2 {
-		font-size: var(--font-size-lg);
-	}
-
-	code {
-		font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-			Bitstream Vera Sans Mono, Courier New, monospace;
-	}
-</style>
