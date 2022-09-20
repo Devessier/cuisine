@@ -1,34 +1,52 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { getSlugFromFileUrl } from "../utils/get-slug";
+import { clsx } from "clsx";
 
 const rawRecipes = await Astro.glob("../recipes/*.md");
 
-const recipes = rawRecipes.map(({ frontmatter: { title, photo }, file }) => ({
-  title,
-  photo,
-  url: `/recette/${getSlugFromFileUrl(file)}/`,
-}));
+const recipes = rawRecipes.map(
+  ({ frontmatter: { title, photo, cooking_datetime }, file }) => ({
+    title,
+    photo,
+    url: `/recette/${getSlugFromFileUrl(file)}/`,
+    cookingDatetime: new Date(cooking_datetime),
+  })
+);
+
+const recipesSortedFromMostRecentToOldest = recipes.sort(
+  (a, b) => Number(b.cookingDatetime) - Number(a.cookingDatetime)
+);
 ---
 
 <Layout title="Recettes">
   <div class="grid grid-cols-3 gap-12">
     {
-      recipes.map(({ photo, title, url }) => (
-        <a href={url} class="flex flex-col bg-gray-50 rounded-xl">
-          <div class="p-4">
-            <img
-              src={photo}
-              alt=""
-              class="aspect-video object-cover object-center rounded-t-lg"
-            />
-          </div>
+      recipesSortedFromMostRecentToOldest.map(
+        ({ photo, title, url }, index) => (
+          <a
+            href={url}
+            class={clsx([
+              "flex flex-col bg-gray-50 rounded-xl",
+              {
+                "row-span-2 col-span-2": index === 0,
+              },
+            ])}
+          >
+            <div class="p-4">
+              <img
+                src={photo}
+                alt=""
+                class="aspect-video object-cover object-center rounded-t-lg"
+              />
+            </div>
 
-          <div class="px-4 pt-4 pb-8">
-            <h2 class="text-lg">{title}</h2>
-          </div>
-        </a>
-      ))
+            <div class="px-4 pt-4 pb-8">
+              <h2 class="text-lg">{title}</h2>
+            </div>
+          </a>
+        )
+      )
     }
   </div>
 </Layout>
