@@ -20,31 +20,32 @@ const recipesSortedFromMostRecentToOldest = recipes.sort(
 ---
 
 <Layout title="Recettes">
-  <div class="grid grid-cols-3 gap-12">
+  <div class="grid grid-cols-3 gap-8">
     {
       recipesSortedFromMostRecentToOldest.map(
         ({ photo, title, url }, index) => (
-          <a
-            href={url}
-            class={clsx([
-              "flex flex-col bg-gray-50 rounded-xl",
-              {
-                "row-span-2 col-span-2": index === 0,
-              },
-            ])}
+          <article
+            class={clsx({
+              "row-span-2 col-span-2": index === 0,
+            })}
           >
-            <div class="p-4">
-              <img
-                src={photo}
-                alt=""
-                class="aspect-video object-cover object-center rounded-t-lg"
-              />
-            </div>
+            <a
+              href={url}
+              class="flex flex-col rounded-lg border border-gray-200"
+            >
+              <div>
+                <img
+                  src={photo}
+                  alt=""
+                  class="aspect-video object-cover object-center rounded-t-lg"
+                />
+              </div>
 
-            <div class="px-4 pt-4 pb-8">
-              <h2 class="text-lg">{title}</h2>
-            </div>
-          </a>
+              <div class="p-4">
+                <h2 class="font-medium max-w-prose">{title}</h2>
+              </div>
+            </a>
+          </article>
         )
       )
     }
