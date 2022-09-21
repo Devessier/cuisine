@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ClockIcon, StarIcon } from '@heroicons/vue/24/outline'
+import { ClockIcon, StarIcon } from '@heroicons/vue/24/outline/esm/index.js'
 import { computed } from 'vue';
 
 const MAXIMUM_STAR_COUNT = 3
