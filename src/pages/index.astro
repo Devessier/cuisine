@@ -20,13 +20,13 @@ const recipesSortedFromMostRecentToOldest = recipes.sort(
 ---
 
 <Layout title="Recettes">
-  <div class="grid grid-cols-3 gap-8">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
     {
       recipesSortedFromMostRecentToOldest.map(
         ({ photo, title, url }, index) => (
           <article
             class={clsx({
-              "row-span-2 col-span-2": index === 0,
+              "md:row-span-2 md:col-span-2": index === 0,
             })}
           >
             <a
