@@ -5,7 +5,7 @@ import { computed } from 'vue';
 const MAXIMUM_STAR_COUNT = 3
 
 const props = defineProps<{
-    cookingDuration: number | undefined
+    cookingDuration?: number
     note: number
     disableAnimation?: boolean
 }>()

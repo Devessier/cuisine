@@ -5,7 +5,7 @@ defineProps<{
     photo: string;
     url: string
     title: string
-    cookingDuration: number | undefined
+    cookingDuration?: number
     note: number
 }>()
 </script>
