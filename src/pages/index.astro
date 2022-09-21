@@ -1,16 +1,22 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { getSlugFromFileUrl } from "../utils/get-slug";
+import RecipeCard from "../components/RecipeCard.vue";
 import { clsx } from "clsx";
 
 const rawRecipes = await Astro.glob("../recipes/*.md");
 
 const recipes = rawRecipes.map(
-  ({ frontmatter: { title, photo, cooking_datetime }, file }) => ({
+  ({
+    frontmatter: { title, photo, cooking_datetime, cooking_duration, note },
+    file,
+  }) => ({
     title,
     photo,
     url: `/recette/${getSlugFromFileUrl(file)}/`,
     cookingDatetime: new Date(cooking_datetime),
+    cookingDuration: cooking_duration,
+    note,
   })
 );
 
@@ -22,32 +28,15 @@ const recipesSortedFromMostRecentToOldest = recipes.sort(
 <Layout title="Recettes">
   <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
     {
-      recipesSortedFromMostRecentToOldest.map(
-        ({ photo, title, url }, index) => (
-          <article
-            class={clsx({
-              "md:row-span-2 md:col-span-2": index === 0,
-            })}
-          >
-            <a
-              href={url}
-              class="flex flex-col rounded-lg border border-gray-200"
-            >
-              <div>
-                <img
-                  src={photo}
-                  alt=""
-                  class="aspect-video object-cover object-center rounded-t-lg"
-                />
-              </div>
-
-              <div class="p-4">
-                <h2 class="font-medium max-w-prose">{title}</h2>
-              </div>
-            </a>
-          </article>
-        )
-      )
+      recipesSortedFromMostRecentToOldest.map((recipeMetadata, index) => (
+        <div
+          class={clsx({
+            "md:row-span-2 md:col-span-2": index === 0,
+          })}
+        >
+          <RecipeCard {...recipeMetadata} />
+        </div>
+      ))
     }
   </div>
 </Layout>

@@ -2,6 +2,8 @@
 title: Risotto aux tomates séchées, aux champignons et au parmesan
 photo: /risotto.jpeg
 cooking_datetime: 2022-09-19T00:00:00Z
+cooking_duration: 60
+note: 3
 ---
 
 Astro is so cool!
