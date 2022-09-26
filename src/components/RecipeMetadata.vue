@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ClockIcon, StarIcon } from '@heroicons/vue/24/outline/esm/index.js'
 import { computed } from 'vue';
+import { formatCookingDuration } from '../utils/format-cooking-time';
 
 const MAXIMUM_STAR_COUNT = 3
 
@@ -15,7 +16,7 @@ const formattedCookingDuration = computed(() => {
         return '—'
     }
 
-    return `${props.cookingDuration} minutes`
+    return formatCookingDuration(props.cookingDuration)
 })
 
 const formattedNoteLabel = computed(() => {

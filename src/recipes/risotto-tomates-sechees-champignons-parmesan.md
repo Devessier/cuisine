@@ -2,7 +2,10 @@
 title: Risotto aux tomates séchées, aux champignons et au parmesan
 photo: /risotto.jpeg
 cooking_datetime: 2022-09-19T00:00:00Z
-cooking_duration: 60
+cooking_duration:
+    preparation: 30
+    chill: 0
+    cooking: 30
 note: 3
 ---
 
@@ -40,7 +43,7 @@ note: 3
 7. En fin de cuisson, ajouter la crème fraîche épaisse, l'oignon, les champignons, les tomates séchées et le parmesan. Saler et poivrer. Mélanger le tout.
 8. Avant de passer à la dégustation, goûter le plat pour s'assurer que l'assaisonnement soit correct.
 
-## Sources
+## Inspirations
 
 - https://www.marmiton.org/recettes/recette_risotto-tomates-sechees-champignons-de-paris_336099.aspx
 - https://www.galbani.fr/recettes/risotto/le-veritable-risotto

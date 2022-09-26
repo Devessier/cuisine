@@ -1,6 +1,7 @@
 ---
 import RecipeMetadata from "../../components/RecipeMetadata.vue";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { shortFormatCookingDuration } from "../../utils/format-cooking-time";
 import { getSlugFromFileUrl } from "../../utils/get-slug";
 
 export async function getStaticPaths() {
@@ -16,9 +17,27 @@ export async function getStaticPaths() {
 const { id } = Astro.params;
 
 const {
-  frontmatter: { title, cooking_duration: cookingDuration, note, photo },
+  frontmatter: {
+    title,
+    cooking_duration: {
+      preparation: preparationDuration,
+      chill: chillDuration,
+      cooking: cookingDuration,
+    },
+    note,
+    photo,
+  },
   Content,
 } = await import(`../../recipes/${id}.md`);
+
+const totalCookingDuration = preparationDuration + chillDuration + cookingDuration
+
+const cookingDurationDetail = {
+  Total: totalCookingDuration,
+  Préparation: preparationDuration,
+  Repos: chillDuration,
+  Cuisson: cookingDuration,
+};
 ---
 
 <BaseLayout title={title}>
@@ -32,13 +51,13 @@ const {
         </h1>
 
         <RecipeMetadata
-          cookingDuration={cookingDuration}
+          cookingDuration={totalCookingDuration}
           note={note}
           disableAnimation
         />
       </div>
     </header>
-    <div class="mx-auto max-w-4xl sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-4xl w-full sm:px-6 lg:px-8">
       <div class="px-4 py-8 sm:px-0 space-y-6 md:space-y-12">
         <div class="flex justify-center">
           <img
@@ -48,7 +67,22 @@ const {
           />
         </div>
 
-        <div class="prose">
+        <dl
+          class="flex flex-wrap gap-4 justify-around rounded-2xl border border-gray-200 p-8"
+        >
+          {
+            Object.entries(cookingDurationDetail).map(([label, duration]) => (
+              <div class="flex space-x-1">
+                <dt>{label}</dt>
+                <dd class="font-medium">
+                  {shortFormatCookingDuration(duration)}
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+
+        <div class="prose break-words">
           <Content />
         </div>
       </div>

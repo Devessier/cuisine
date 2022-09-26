@@ -8,14 +8,24 @@ const rawRecipes = await Astro.glob("../recipes/*.md");
 
 const recipes = rawRecipes.map(
   ({
-    frontmatter: { title, photo, cooking_datetime, cooking_duration, note },
+    frontmatter: {
+      title,
+      photo,
+      cooking_datetime,
+      cooking_duration: {
+        preparation: preparationDuration,
+        chill: chillDuration,
+        cooking: cookingDuration,
+      },
+      note,
+    },
     file,
   }) => ({
     title,
     photo,
     url: `/recette/${getSlugFromFileUrl(file)}/`,
     cookingDatetime: new Date(cooking_datetime),
-    cookingDuration: cooking_duration,
+    totalCookingDuration: preparationDuration + chillDuration + cookingDuration,
     note,
   })
 );
@@ -28,15 +38,20 @@ const recipesSortedFromMostRecentToOldest = recipes.sort(
 <Layout title="Recettes">
   <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
     {
-      recipesSortedFromMostRecentToOldest.map((recipeMetadata, index) => (
-        <div
-          class={clsx({
-            "md:row-span-2 md:col-span-2": index === 0,
-          })}
-        >
-          <RecipeCard {...recipeMetadata} />
-        </div>
-      ))
+      recipesSortedFromMostRecentToOldest.map(
+        ({ totalCookingDuration, ...recipeMetadata }, index) => (
+          <div
+            class={clsx({
+              "md:row-span-2 md:col-span-2": index === 0,
+            })}
+          >
+            <RecipeCard
+              {...recipeMetadata}
+              cookingDuration={totalCookingDuration}
+            />
+          </div>
+        )
+      )
     }
   </div>
 </Layout>
