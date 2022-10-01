@@ -13,6 +13,7 @@
   "dependencies": {
     "@astrojs/tailwind": "^2.0.1",
     "@astrojs/vue": "^1.0.2",
+    "@headlessui/vue": "^1.7.3",
     "@heroicons/vue": "^2.0.11",
     "astro": "^1.2.6",
     "clsx": "^1.2.1",
