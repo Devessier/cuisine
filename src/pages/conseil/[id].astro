@@ -1,0 +1,28 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Layout from "../../layouts/Layout.astro";
+import { getSlugFromFileUrl } from "../../utils/get-slug";
+
+export async function getStaticPaths() {
+  const conseils = await Astro.glob("../../conseils/*.md");
+
+  const pages = conseils.map(({ file }) => ({
+    params: { id: getSlugFromFileUrl(file) },
+  }));
+
+  return pages;
+}
+
+const { id } = Astro.params;
+
+const {
+  frontmatter: { title },
+  Content,
+} = await import(`../../conseils/${id}.md`);
+---
+
+<Layout title={title}>
+  <div class="prose">
+    <Content />
+  </div>
+</Layout>

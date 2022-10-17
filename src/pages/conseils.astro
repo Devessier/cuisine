@@ -1,7 +1,27 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+import { getSlugFromFileUrl } from "../utils/get-slug";
+
+const rawConseils = await Astro.glob("../conseils/*.md");
+
+const conseils = rawConseils
+  .filter(({ frontmatter: { draft } }) => draft !== true)
+  .map(({ frontmatter: { title }, file }) => ({
+    title,
+    url: `/conseil/${getSlugFromFileUrl(file)}/`,
+  }));
 ---
 
 <Layout title="Conseils">
-	<p>Conseils</p>
+  <div class="prose">
+    <ul>
+      {
+        conseils.map(({ title, url }) => (
+          <li>
+            <a href={url}>{title}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
 </Layout>
