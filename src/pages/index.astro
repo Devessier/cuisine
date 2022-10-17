@@ -6,29 +6,32 @@ import { clsx } from "clsx";
 
 const rawRecipes = await Astro.glob("../recipes/*.md");
 
-const recipes = rawRecipes.map(
-  ({
-    frontmatter: {
+const recipes = rawRecipes
+  .filter(({ frontmatter: { draft } }) => draft !== true)
+  .map(
+    ({
+      frontmatter: {
+        title,
+        photo,
+        cooking_datetime,
+        cooking_duration: {
+          preparation: preparationDuration,
+          chill: chillDuration,
+          cooking: cookingDuration,
+        },
+        note,
+      },
+      file,
+    }) => ({
       title,
       photo,
-      cooking_datetime,
-      cooking_duration: {
-        preparation: preparationDuration,
-        chill: chillDuration,
-        cooking: cookingDuration,
-      },
+      url: `/recette/${getSlugFromFileUrl(file)}/`,
+      cookingDatetime: new Date(cooking_datetime),
+      totalCookingDuration:
+        preparationDuration + chillDuration + cookingDuration,
       note,
-    },
-    file,
-  }) => ({
-    title,
-    photo,
-    url: `/recette/${getSlugFromFileUrl(file)}/`,
-    cookingDatetime: new Date(cooking_datetime),
-    totalCookingDuration: preparationDuration + chillDuration + cookingDuration,
-    note,
-  })
-);
+    })
+  );
 
 const recipesSortedFromMostRecentToOldest = recipes.sort(
   (a, b) => Number(b.cookingDatetime) - Number(a.cookingDatetime)

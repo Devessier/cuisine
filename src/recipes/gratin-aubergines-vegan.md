@@ -7,6 +7,7 @@ cooking_duration:
     chill: 0
     cooking: 30
 note: 2
+draft: true
 ---
 
 Astro is so cool!
